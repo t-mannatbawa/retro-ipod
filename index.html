@@ -79,8 +79,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      height: 100vh;
+      height: 100dvh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
 
     .ipod {
@@ -469,6 +472,20 @@
 
     .pause-overlay.active {
       display: flex;
+    }
+
+    @media (max-height: 540px) {
+      .ipod {
+        transform: scale(0.85);
+        transform-origin: center;
+      }
+    }
+
+    @media (max-height: 460px) {
+      .ipod {
+        transform: scale(0.7);
+        transform-origin: center;
+      }
     }
   </style>
 </head>
