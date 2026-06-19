@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iPod Classic</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .ipod {
+      width: 280px;
+      height: 500px;
+      background: linear-gradient(145deg, #e8e8e8, #c8c8c8);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+    }
+
+    html[data-theme="dark"] .ipod {
+      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .screen {
+      width: 100%;
+      height: 200px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 3px solid #111;
+      position: relative;
+    }
+
+    .screen-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(180deg, #4a90d9, #357abd);
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .header .title {
+      font-size: 11px;
+    }
+
+    .battery {
+      width: 18px;
+      height: 9px;
+      border: 1px solid #fff;
+      border-radius: 2px;
+      position: relative;
+      padding: 1px;
+    }
+
+    .battery::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #fff;
+      border-radius: 0 1px 1px 0;
+    }
+
+    .battery-fill {
+      width: 80%;
+      height: 100%;
+      background: #4ade80;
+      border-radius: 1px;
+    }
+
+    .song-list {
+      flex: 1;
+      overflow-y: auto;
+      background: #f0f0f0;
+    }
+
+    .song-item {
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #000;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .song-item:hover {
+      background: #e0e0e0;
+    }
+
+    .song-item.selected {
+      background: #4a90d9;
+      color: #fff;
+    }
+
+    .song-item .arrow {
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    .song-item.selected .arrow {
+      opacity: 1;
+    }
+
+    /* Now Playing Screen */
+    .now-playing {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .now-playing.active {
+      display: flex;
+    }
+
+    .song-list-view {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .song-list-view.hidden {
+      display: none;
+    }
+
+    .album-art {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1a1a2e;
+      padding: 8px;
+    }
+
+    .album-art img {
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      image-rendering: pixelated;
+    }
+
+    .album-placeholder {
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, var(--cp-accent), #ff6b35);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+    }
+
+    .now-playing-info {
+      background: #2a2a3e;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .now-playing-info .song-title {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .now-playing-info .artist {
+      color: #aaa;
+      font-size: 9px;
+    }
+
+    .progress-bar {
+      margin-top: 6px;
+      width: 100%;
+      height: 3px;
+      background: #555;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #4a90d9;
+      width: 0%;
+      transition: width 0.3s linear;
+      border-radius: 2px;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+      font-size: 8px;
+      color: #888;
+    }
+
+    /* Click Wheel */
+    .click-wheel {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+      user-select: none;
+    }
+
+    html[data-theme="dark"] .click-wheel {
+      background: linear-gradient(145deg, #3a3a3a, #1a1a1a);
+    }
+
+    .center-button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+      border: none;
+      cursor: pointer;
+      box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      transition: transform 0.1s;
+      z-index: 2;
+    }
+
+    html[data-theme="dark"] .center-button {
+      background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+    }
+
+    .center-button:active {
+      transform: scale(0.95);
+    }
+
+    .wheel-label {
+      position: absolute;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--cp-text-muted);
+      pointer-events: none;
+    }
+
+    .wheel-label.top { top: 14px; }
+    .wheel-label.bottom { bottom: 14px; }
+    .wheel-label.left { left: 14px; }
+    .wheel-label.right { right: 14px; }
+
+    .wheel-btn {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+
+    .wheel-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .wheel-btn.top { top: 4px; }
+    .wheel-btn.bottom { bottom: 4px; }
+    .wheel-btn.left { left: 4px; }
+    .wheel-btn.right { right: 4px; }
+
+    /* Rick Roll reveal animation */
+    .rick-reveal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .rick-reveal.active {
+      display: flex;
+    }
+
+    .rick-video-container {
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .rick-video-container iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+    .rick-text {
+      color: #ff6b35;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      padding: 4px;
+      animation: pulse 1s infinite;
+    }
+
+    .rick-emoji {
+      font-size: 28px;
+      margin-bottom: 4px;
+      animation: bounce 0.6s infinite alternate;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5px); }
+    }
+
+    .volume-indicator {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: var(--cp-text-muted);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .volume-indicator.show {
+      opacity: 1;
+    }
+    #ytPlayer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="ipod">
+    <div class="screen">
+      <div class="screen-content">
+        <!-- Song List View -->
+        <div class="song-list-view" id="songListView">
+          <div class="header">
+            <span class="title">Music</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+          <div class="song-list" id="songList"></div>
+        </div>
+
+        <!-- Now Playing View -->
+        <div class="now-playing" id="nowPlaying">
+          <div class="header">
+            <span class="title">Now Playing</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+          <div class="album-art">
+            <div class="album-placeholder">🎵</div>
+          </div>
+          <div class="now-playing-info">
+            <div class="song-title" id="npTitle">---</div>
+            <div class="artist" id="npArtist">---</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="time-display">
+              <span id="currentTime">0:00</span>
+              <span id="totalTime">3:33</span>
+            </div>
+          </div>
+
+          <!-- Rick Roll Reveal -->
+          <div class="rick-reveal" id="rickReveal">
+            <div class="rick-video-container">
+              <iframe id="rickIframe" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="rick-text">
+              🎤 YOU GOT RICK ROLL'D! 🎤
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Click Wheel -->
+    <div class="click-wheel">
+      <span class="wheel-label top">MENU</span>
+      <span class="wheel-label bottom">⏯</span>
+      <span class="wheel-label left">⏮</span>
+      <span class="wheel-label right">⏭</span>
+
+      <button class="wheel-btn top" onclick="goBack()" title="Menu"></button>
+      <button class="wheel-btn bottom" onclick="togglePlay()" title="Play/Pause"></button>
+      <button class="wheel-btn left" onclick="prevSong()" title="Previous"></button>
+      <button class="wheel-btn right" onclick="nextSong()" title="Next"></button>
+      <button class="center-button" onclick="selectSong()" title="Select"></button>
+    </div>
+
+    <div class="volume-indicator" id="volumeIndicator">🔊 Vol: 75%</div>
+  </div>
+
+  <script>
+    const rickIframe = document.getElementById('rickIframe');
+
+    function playRickRoll() {
+      rickIframe.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&start=0';
+    }
+
+    function stopRickRoll() {
+      rickIframe.src = '';
+    }
+
+    const songs = [
+      { title: "Bohemian Rhapsody", artist: "Queen" },
+      { title: "Hotel California", artist: "Eagles" },
+      { title: "Stairway to Heaven", artist: "Led Zeppelin" },
+      { title: "Imagine", artist: "John Lennon" },
+      { title: "Smells Like Teen Spirit", artist: "Nirvana" },
+      { title: "Billie Jean", artist: "Michael Jackson" },
+      { title: "Hey Jude", artist: "The Beatles" },
+      { title: "Sweet Child O' Mine", artist: "Guns N' Roses" },
+      { title: "Wonderwall", artist: "Oasis" },
+      { title: "Lose Yourself", artist: "Eminem" },
+      { title: "Mr. Brightside", artist: "The Killers" },
+      { title: "Don't Stop Believin'", artist: "Journey" },
+    ];
+
+    let selectedIndex = 0;
+    let isPlaying = false;
+    let isNowPlaying = false;
+    let progressInterval = null;
+    let progress = 0;
+    let rickRollTimeout = null;
+
+    const songList = document.getElementById("songList");
+    const songListView = document.getElementById("songListView");
+    const nowPlaying = document.getElementById("nowPlaying");
+    const npTitle = document.getElementById("npTitle");
+    const npArtist = document.getElementById("npArtist");
+    const progressFill = document.getElementById("progressFill");
+    const currentTime = document.getElementById("currentTime");
+    const rickReveal = document.getElementById("rickReveal");
+
+    function renderSongs() {
+      songList.innerHTML = songs.map((song, i) => `
+        <div class="song-item ${i === selectedIndex ? 'selected' : ''}" onclick="selectedIndex=${i};renderSongs();" ondblclick="selectedIndex=${i};selectSong();">
+          <span>${song.title}</span>
+          <span class="arrow">▶</span>
+        </div>
+      `).join('');
+
+      // Scroll selected into view
+      const selected = songList.querySelector('.selected');
+      if (selected) selected.scrollIntoView({ block: 'nearest' });
+    }
+
+    function selectSong() {
+      if (!isNowPlaying) {
+        playSong(selectedIndex);
+      }
+    }
+
+    function playSong(index) {
+      const song = songs[index];
+      isNowPlaying = true;
+      isPlaying = true;
+      progress = 0;
+
+      songListView.classList.add('hidden');
+      nowPlaying.classList.add('active');
+      rickReveal.classList.remove('active');
+
+      npTitle.textContent = song.title;
+      npArtist.textContent = song.artist;
+      progressFill.style.width = '0%';
+      currentTime.textContent = '0:00';
+
+      // Start progress
+      clearInterval(progressInterval);
+      progressInterval = setInterval(() => {
+        if (isPlaying) {
+          progress += 0.5;
+          const percent = Math.min((progress / 213) * 100, 100);
+          progressFill.style.width = percent + '%';
+
+          const mins = Math.floor(progress / 60);
+          const secs = Math.floor(progress % 60);
+          currentTime.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+      }, 500);
+
+      // Rick Roll reveal after 2 seconds
+      clearTimeout(rickRollTimeout);
+      rickRollTimeout = setTimeout(() => {
+        rickReveal.classList.add('active');
+        npTitle.textContent = "Never Gonna Give You Up";
+        npArtist.textContent = "Rick Astley";
+        playRickRoll();
+      }, 2000);
+    }
+
+    function togglePlay() {
+      if (isNowPlaying) {
+        isPlaying = !isPlaying;
+        if (isPlaying) { playRickRoll(); } else { stopRickRoll(); }
+      } else {
+        selectSong();
+      }
+    }
+
+    function goBack() {
+      if (isNowPlaying) {
+        isNowPlaying = false;
+        isPlaying = false;
+        clearInterval(progressInterval);
+        clearTimeout(rickRollTimeout);
+        stopRickRoll();
+        songListView.classList.remove('hidden');
+        nowPlaying.classList.remove('active');
+        rickReveal.classList.remove('active');
+      }
+    }
+
+    function nextSong() {
+      if (isNowPlaying) {
+        selectedIndex = (selectedIndex + 1) % songs.length;
+        renderSongs();
+        playSong(selectedIndex);
+      } else {
+        selectedIndex = (selectedIndex + 1) % songs.length;
+        renderSongs();
+      }
+    }
+
+    function prevSong() {
+      if (isNowPlaying) {
+        selectedIndex = (selectedIndex - 1 + songs.length) % songs.length;
+        renderSongs();
+        playSong(selectedIndex);
+      } else {
+        selectedIndex = (selectedIndex - 1 + songs.length) % songs.length;
+        renderSongs();
+      }
+    }
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowUp': prevSong(); break;
+        case 'ArrowDown': nextSong(); break;
+        case 'Enter': selectSong(); break;
+        case 'Escape': case 'Backspace': goBack(); break;
+        case ' ': e.preventDefault(); togglePlay(); break;
+      }
+    });
+
+    renderSongs();
+  </script>
+</body>
+</html>
