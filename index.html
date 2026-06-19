@@ -226,20 +226,105 @@
       display: none;
     }
 
-    .album-art {
+    .np-body {
       flex: 1;
       display: flex;
-      justify-content: center;
+      flex-direction: row;
       align-items: center;
-      background: #1a1a2e;
-      padding: 8px;
+      padding: 10px;
+      gap: 10px;
+      background: #fff;
     }
 
-    .album-art img {
-      width: 100px;
-      height: 100px;
-      border-radius: 4px;
+    .np-album-art {
+      width: 88px;
+      height: 88px;
+      border-radius: 2px;
       object-fit: cover;
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+      transform: perspective(200px) rotateY(25deg);
+    }
+
+    .np-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .np-info .np-song-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .np-info .np-artist {
+      font-size: 11px;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .np-info .np-album {
+      font-size: 10px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .np-info .np-stars {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 1px;
+    }
+
+    .np-info .np-track {
+      font-size: 9px;
+      color: #999;
+    }
+
+    .np-progress {
+      background: linear-gradient(180deg, #e8e8e8, #d0d0d0);
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid #bbb;
+    }
+
+    .np-progress .time-label {
+      font-size: 9px;
+      color: #333;
+      min-width: 28px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .np-progress .time-label.right {
+      text-align: right;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 10px;
+      background: linear-gradient(180deg, #c8c8c8, #e0e0e0);
+      border-radius: 0;
+      overflow: hidden;
+      border: 1px solid #999;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(180deg, #a8d4f5, #4a9de8, #3a7cc7);
+      width: 0%;
+      transition: width 0.3s linear;
+      border-radius: 0;
     }
 
     .song-item-inner {
@@ -255,49 +340,6 @@
       border-radius: 2px;
       object-fit: cover;
       flex-shrink: 0;
-    }
-
-    .now-playing-info {
-      background: #2a2a3e;
-      padding: 8px 10px;
-      text-align: center;
-    }
-
-    .now-playing-info .song-title {
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .now-playing-info .artist {
-      color: #aaa;
-      font-size: 9px;
-    }
-
-    .progress-bar {
-      margin-top: 6px;
-      width: 100%;
-      height: 3px;
-      background: #555;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: #4a90d9;
-      width: 0%;
-      transition: width 0.3s linear;
-      border-radius: 2px;
-    }
-
-    .time-display {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 2px;
-      font-size: 8px;
-      color: #888;
     }
 
     /* Click Wheel */
@@ -416,6 +458,42 @@
       font-weight: 700;
       text-align: center;
       padding: 4px;
+    }
+
+    .rick-progress {
+      width: 100%;
+      padding: 4px 10px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #111;
+    }
+
+    .rick-progress .time-label {
+      font-size: 9px;
+      color: #ccc;
+      min-width: 28px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rick-progress .time-label.right {
+      text-align: right;
+    }
+
+    .rick-progress .progress-bar {
+      flex: 1;
+      height: 10px;
+      background: linear-gradient(180deg, #333, #555);
+      border-radius: 0;
+      overflow: hidden;
+      border: 1px solid #666;
+    }
+
+    .rick-progress .progress-fill {
+      height: 100%;
+      background: linear-gradient(180deg, #a8d4f5, #4a9de8, #3a7cc7);
+      width: 0%;
+      transition: width 0.3s linear;
       animation: pulse 1s infinite;
     }
 
@@ -508,17 +586,20 @@
             <span class="title">Now Playing</span>
             <div class="battery"><div class="battery-fill"></div></div>
           </div>
-          <div class="album-art">
-            <img id="albumArtImg" src="" alt="Album Art" />
-          </div>
-          <div class="now-playing-info">
-            <div class="song-title" id="npTitle">---</div>
-            <div class="artist" id="npArtist">---</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-            <div class="time-display">
-              <span id="currentTime">0:00</span>
-              <span id="totalTime">3:33</span>
+          <div class="np-body">
+            <img class="np-album-art" id="albumArtImg" src="" alt="Album Art" />
+            <div class="np-info">
+              <div class="np-song-title" id="npTitle">---</div>
+              <div class="np-artist" id="npArtist">---</div>
+              <div class="np-album" id="npAlbum">---</div>
+              <div class="np-stars">★★★★☆</div>
+              <div class="np-track" id="npTrack">1 of 12</div>
             </div>
+          </div>
+          <div class="np-progress">
+            <span class="time-label" id="currentTime">0:00</span>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <span class="time-label right" id="remainingTime">-3:37</span>
           </div>
 
           <!-- Rick Roll Reveal -->
@@ -529,7 +610,12 @@
               </video>
             </div>
             <div class="rick-text">
-              YOU GOT RICK ROLL'D! 
+              YOU GOT RICK ROLL'D!
+            </div>
+            <div class="rick-progress">
+              <span class="time-label" id="rickCurrentTime">0:00</span>
+              <div class="progress-bar"><div class="progress-fill" id="rickProgressFill"></div></div>
+              <span class="time-label right" id="rickRemainingTime">-3:35</span>
             </div>
             <div class="pause-overlay" id="pauseOverlay">❚❚</div>
           </div>
@@ -565,26 +651,50 @@
       rickVideo.load();
       rickVideo.play().catch(() => {});
       pauseOverlay.classList.remove('active');
+
+      const rickProgressFill = document.getElementById('rickProgressFill');
+      const rickCurrentTime = document.getElementById('rickCurrentTime');
+      const rickRemainingTime = document.getElementById('rickRemainingTime');
+
+      clearInterval(progressInterval);
+
+      rickVideo.ontimeupdate = () => {
+        const curr = rickVideo.currentTime;
+        const dur = rickVideo.duration || 215;
+        const percent = (curr / dur) * 100;
+        rickProgressFill.style.width = percent + '%';
+        progressFill.style.width = percent + '%';
+        const mins = Math.floor(curr / 60);
+        const secs = Math.floor(curr % 60);
+        rickCurrentTime.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        currentTime.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        const rem = Math.max(dur - curr, 0);
+        const remMins = Math.floor(rem / 60);
+        const remSecs = Math.floor(rem % 60);
+        rickRemainingTime.textContent = `-${remMins}:${remSecs.toString().padStart(2, '0')}`;
+        remainingTime.textContent = `-${remMins}:${remSecs.toString().padStart(2, '0')}`;
+      };
     }
 
     function stopRickRoll() {
       rickVideo.pause();
       rickVideo.currentTime = 0;
+      rickVideo.ontimeupdate = null;
     }
 
     const songs = [
-      { title: "Bohemian Rhapsody", artist: "Queen", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/300x300bb.jpg" },
-      { title: "Hotel California", artist: "Eagles", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/300x300bb.jpg" },
-      { title: "Stairway to Heaven", artist: "Led Zeppelin", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/300x300bb.jpg" },
-      { title: "Imagine", artist: "John Lennon", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/21/e3/b0/21e3b048-c917-92c4-bd7d-ace44797b388/13UABIM52808.rgb.jpg/300x300bb.jpg" },
-      { title: "Smells Like Teen Spirit", artist: "Nirvana", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/300x300bb.jpg" },
-      { title: "Billie Jean", artist: "Michael Jackson", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/300x300bb.jpg" },
-      { title: "Hey Jude", artist: "The Beatles", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/a6/8b/65/a68b657c-cac6-68e6-3bde-b79d58fbc795/18UMGIM30762.rgb.jpg/300x300bb.jpg" },
-      { title: "Sweet Child O' Mine", artist: "Guns N' Roses", art: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/56/47/b7/5647b700-6b9d-9e72-ec9f-51140b6d4492/00602567673781.rgb.jpg/300x300bb.jpg" },
-      { title: "Wonderwall", artist: "Oasis", art: "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/300x300bb.jpg" },
-      { title: "Lose Yourself", artist: "Eminem", art: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/08/23/fc/0823fcd9-cb44-695b-32bf-b3bf51d9f800/00606949351229.rgb.jpg/300x300bb.jpg" },
-      { title: "Mr. Brightside", artist: "The Killers", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/11/64/9c/11649c80-2066-dba8-77a9-df7eecae26c1/17UM1IM06937.rgb.jpg/300x300bb.jpg" },
-      { title: "Don't Stop Believin'", artist: "Journey", art: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/2d/61/712d617d-f4a4-5904-1b11-d4b4b45c47c5/828768588925.jpg/300x300bb.jpg" },
+      { title: "Bohemian Rhapsody", artist: "Queen", album: "A Night at the Opera", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/300x300bb.jpg" },
+      { title: "Hotel California", artist: "Eagles", album: "Hotel California", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/300x300bb.jpg" },
+      { title: "Stairway to Heaven", artist: "Led Zeppelin", album: "Led Zeppelin IV", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/300x300bb.jpg" },
+      { title: "Imagine", artist: "John Lennon", album: "Imagine", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/21/e3/b0/21e3b048-c917-92c4-bd7d-ace44797b388/13UABIM52808.rgb.jpg/300x300bb.jpg" },
+      { title: "Smells Like Teen Spirit", artist: "Nirvana", album: "Nevermind", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/300x300bb.jpg" },
+      { title: "Billie Jean", artist: "Michael Jackson", album: "Thriller", art: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/300x300bb.jpg" },
+      { title: "Hey Jude", artist: "The Beatles", album: "Past Masters", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/a6/8b/65/a68b657c-cac6-68e6-3bde-b79d58fbc795/18UMGIM30762.rgb.jpg/300x300bb.jpg" },
+      { title: "Sweet Child O' Mine", artist: "Guns N' Roses", album: "Appetite for Destruction", art: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/56/47/b7/5647b700-6b9d-9e72-ec9f-51140b6d4492/00602567673781.rgb.jpg/300x300bb.jpg" },
+      { title: "Wonderwall", artist: "Oasis", album: "(What's the Story)", art: "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/300x300bb.jpg" },
+      { title: "Lose Yourself", artist: "Eminem", album: "8 Mile Soundtrack", art: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/08/23/fc/0823fcd9-cb44-695b-32bf-b3bf51d9f800/00606949351229.rgb.jpg/300x300bb.jpg" },
+      { title: "Mr. Brightside", artist: "The Killers", album: "Hot Fuss", art: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/11/64/9c/11649c80-2066-dba8-77a9-df7eecae26c1/17UM1IM06937.rgb.jpg/300x300bb.jpg" },
+      { title: "Don't Stop Believin'", artist: "Journey", album: "Escape", art: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/2d/61/712d617d-f4a4-5904-1b11-d4b4b45c47c5/828768588925.jpg/300x300bb.jpg" },
     ];
 
     let selectedIndex = 0;
@@ -600,8 +710,11 @@
     const nowPlaying = document.getElementById("nowPlaying");
     const npTitle = document.getElementById("npTitle");
     const npArtist = document.getElementById("npArtist");
+    const npAlbum = document.getElementById("npAlbum");
+    const npTrack = document.getElementById("npTrack");
     const progressFill = document.getElementById("progressFill");
     const currentTime = document.getElementById("currentTime");
+    const remainingTime = document.getElementById("remainingTime");
     const rickReveal = document.getElementById("rickReveal");
 
     function renderSongs() {
@@ -634,6 +747,11 @@
       rickRolled = false;
       progress = 0;
 
+      // Stop any previous rick roll
+      rickVideo.pause();
+      rickVideo.currentTime = 0;
+      rickVideo.ontimeupdate = null;
+
       songListView.classList.add('hidden');
       nowPlaying.classList.add('active');
       rickReveal.classList.remove('active');
@@ -641,19 +759,26 @@
 
       npTitle.textContent = song.title;
       npArtist.textContent = song.artist;
+      npAlbum.textContent = song.album;
+      npTrack.textContent = `${index + 1} of ${songs.length}`;
       albumArtImg.src = song.art;
       progressFill.style.width = '0%';
       currentTime.textContent = '0:00';
+      remainingTime.textContent = '-3:37';
 
       clearInterval(progressInterval);
       progressInterval = setInterval(() => {
         if (isPlaying) {
           progress += 0.5;
-          const percent = Math.min((progress / 213) * 100, 100);
+          const percent = Math.min((progress / 217) * 100, 100);
           progressFill.style.width = percent + '%';
           const mins = Math.floor(progress / 60);
           const secs = Math.floor(progress % 60);
           currentTime.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+          const rem = Math.max(217 - progress, 0);
+          const remMins = Math.floor(rem / 60);
+          const remSecs = Math.floor(rem % 60);
+          remainingTime.textContent = `-${remMins}:${remSecs.toString().padStart(2, '0')}`;
         }
       }, 500);
 
@@ -663,6 +788,7 @@
         rickReveal.classList.add('active');
         npTitle.textContent = "Never Gonna Give You Up";
         npArtist.textContent = "Rick Astley";
+        npAlbum.textContent = "Whenever You Need Somebody";
         playRickRoll();
       }, 2000);
     }
